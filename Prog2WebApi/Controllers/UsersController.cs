@@ -20,6 +20,12 @@ namespace Prog2WebApi.Controllers
         [HttpPost("/register")]
         public IActionResult CreateUser(UserRequest request)
         {
+            var existingUser = _db.Users.FirstOrDefault(u => u.Username == request.Username);
+            if (existingUser != null)
+            {
+                return Conflict("Username already exists.");
+            }
+
             var user = new User()
             {
                 Username = request.Username,
