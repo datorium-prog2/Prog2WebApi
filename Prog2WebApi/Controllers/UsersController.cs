@@ -36,5 +36,22 @@ namespace Prog2WebApi.Controllers
 
             return Ok(user);
         }
+
+        [HttpPost("/login")]
+        public IActionResult LoginUser(UserRequest request)
+        {
+            var existingUser = _db.Users.FirstOrDefault(u => u.Username == request.Username);
+            if (existingUser == null)
+            {
+                return NotFound("User with this username does not exist.");
+            }
+
+            if (existingUser.Password != request.Password)
+            {
+                return Unauthorized("Incorrect password");
+            }
+
+            return Ok(existingUser.Id);
+        }
     }
 }
