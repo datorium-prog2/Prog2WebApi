@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
+using Prog2WebApi.Models.Requests;
 
 namespace Prog2WebApi.Controllers
 {
@@ -17,8 +18,17 @@ namespace Prog2WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser()
+        public IActionResult CreateUser(UserRequest request)
         {
+            var user = new User()
+            {
+                Username = request.Username,
+                Password = request.Password
+            };
+            _db.Users.Add(user);
+            _db.SaveChanges();
+
+            return Ok(user);
         }
     }
 }
