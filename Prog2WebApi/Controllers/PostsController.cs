@@ -44,5 +44,12 @@ namespace Prog2WebApi.Controllers
             _db.SaveChanges();
             return Ok(post);
         }
+
+        [HttpGet("user/{id:int}")]
+        public IActionResult GetPostsByUser(int id)
+        {
+            var userPosts = _db.Posts.Where(p => p.UserId == id).ToList();
+            return Ok(userPosts);
+        }
     }
 }
