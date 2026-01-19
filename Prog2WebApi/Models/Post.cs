@@ -7,7 +7,8 @@ namespace Prog2WebApi.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public DateTime CreateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int UserId { get; set; }
 
         public static Post From(PostRequest dto)
         {
@@ -15,7 +16,8 @@ namespace Prog2WebApi.Models
             {
                 Title = dto.Title,
                 Content = dto.Content,
-                CreateAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UserId = dto.AuthorId
             };
         }
     }
