@@ -17,7 +17,7 @@ namespace Prog2WebApi.Controllers
             _db = dbContext;
         }
 
-        [HttpPost]
+        [HttpPost("/register")]
         public IActionResult CreateUser(UserRequest request)
         {
             var user = new User()
