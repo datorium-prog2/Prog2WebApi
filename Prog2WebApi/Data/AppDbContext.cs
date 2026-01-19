@@ -12,5 +12,6 @@ namespace Prog2WebApi.Data
 
         // Norādam kādas tabulas būs mūsu datubāzē
         public DbSet<Post> Posts => Set<Post>();
+        public DbSet<User> Users => Set<User>();
     }
 }
