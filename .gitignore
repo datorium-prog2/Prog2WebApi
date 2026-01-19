@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Prog2WebApi/Prog2SocialMediaDb.db
+/Prog2WebApi/Prog2SocialMediaDb.db-shm
+/Prog2WebApi/Prog2SocialMediaDb.db-wal
