@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
+using Prog2WebApi.Models.Requests;
 
 namespace Prog2WebApi.Controllers
 {
@@ -36,9 +37,9 @@ namespace Prog2WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePost(PostDto postDto)
+        public IActionResult CreatePost(PostRequest request)
         {
-            var post = Post.From(postDto);
+            var post = Post.From(request);
             _db.Posts.Add(post);
             _db.SaveChanges();
             return Ok(post);

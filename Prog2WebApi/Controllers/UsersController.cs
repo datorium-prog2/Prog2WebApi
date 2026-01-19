@@ -2,6 +2,7 @@
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
+using Prog2WebApi.Models.Responses;
 
 namespace Prog2WebApi.Controllers
 {
@@ -51,7 +52,8 @@ namespace Prog2WebApi.Controllers
                 return Unauthorized("Incorrect password");
             }
 
-            return Ok(existingUser.Id);
+            var response = new UserResponse() { Id = existingUser.Id };
+            return Ok(response);
         }
     }
 }

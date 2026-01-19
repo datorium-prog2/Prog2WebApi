@@ -1,6 +1,6 @@
-﻿namespace Prog2WebApi.Models
+﻿namespace Prog2WebApi.Models.Requests
 {
-    public class PostDto
+    public class PostRequest
     {
         public string Title { get; set; }
         public string Content { get; set; }
