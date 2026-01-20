@@ -19,7 +19,7 @@ namespace Prog2WebApi.Services
 
             // izveidojam atslēgu, ar kuru šifrēsim tokenu
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("PROG2_NOSLEPUMS")
+                Encoding.UTF8.GetBytes("PROG2_LIELS_NOSLEPUMS")
             );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
