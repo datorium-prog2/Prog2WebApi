@@ -4,6 +4,7 @@ using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
 using Prog2WebApi.Models.Responses;
+using Prog2WebApi.Services;
 
 namespace Prog2WebApi.Controllers
 {
@@ -61,7 +62,7 @@ namespace Prog2WebApi.Controllers
                 return Unauthorized("Incorrect credentials.");
             }
 
-            var token = 123;
+            var token = AuthenticationService.CreateJwtToken(existingUser);
             return Ok(new { token });
         }
     }
