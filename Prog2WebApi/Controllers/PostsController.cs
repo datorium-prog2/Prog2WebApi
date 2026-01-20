@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
@@ -36,6 +37,7 @@ namespace Prog2WebApi.Controllers
             return Ok(post);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreatePost(PostRequest request)
         {
