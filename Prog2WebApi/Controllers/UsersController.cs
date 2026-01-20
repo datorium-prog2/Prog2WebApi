@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
@@ -29,9 +30,13 @@ namespace Prog2WebApi.Controllers
 
             var user = new User()
             {
-                Username = request.Username,
-                Password = request.Password
+                Username = request.Username
             };
+
+            // Izveidojam hasher objektu un hash'ojam paroli
+            var hasher = new PasswordHasher<User>();
+            user.Password = hasher.HashPassword(user, request.Password);
+
             _db.Users.Add(user);
             _db.SaveChanges();
 
