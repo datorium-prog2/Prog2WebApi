@@ -40,7 +40,7 @@ namespace Prog2WebApi.Controllers
             _db.Users.Add(user);
             _db.SaveChanges();
 
-            return Ok(user);
+            return Ok();
         }
 
         [HttpPost("/login")]
@@ -49,16 +49,20 @@ namespace Prog2WebApi.Controllers
             var existingUser = _db.Users.FirstOrDefault(u => u.Username == request.Username);
             if (existingUser == null)
             {
-                return NotFound("User with this username does not exist.");
+                return Unauthorized("Incorrect credentials.");
             }
 
-            if (existingUser.Password != request.Password)
+            // Izveidojam hasher objektu un salīdzinam ievadītās paroles hash ar DB hash
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(existingUser, existingUser.Password, request.Password);
+
+            if (result != PasswordVerificationResult.Success)
             {
-                return Unauthorized("Incorrect password");
+                return Unauthorized("Incorrect credentials.");
             }
 
-            var response = new UserResponse() { Id = existingUser.Id };
-            return Ok(response);
+            var token = 123;
+            return Ok(new { token });
         }
     }
 }
