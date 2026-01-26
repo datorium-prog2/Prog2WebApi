@@ -4,6 +4,7 @@ using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Prog2WebApi.Controllers
 {
@@ -22,7 +23,17 @@ namespace Prog2WebApi.Controllers
         [HttpGet]
         public IActionResult GetPosts()
         {
-            List<Post> allPosts = _db.Posts.ToList();
+            var allPosts = _db.Posts
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Title,
+                    p.Content,
+                    p.CreatedAt,
+                    p.UserId,
+                    LikeCount = p.Likes.Count
+                })
+                .ToList();
             return Ok(allPosts);
         }
 

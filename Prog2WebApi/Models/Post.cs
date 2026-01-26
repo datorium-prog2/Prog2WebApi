@@ -1,4 +1,6 @@
 ﻿using Prog2WebApi.Models.Requests;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Prog2WebApi.Models
 {
@@ -16,6 +18,10 @@ namespace Prog2WebApi.Models
         public User User { get; set; }
         // šis ļaus izgūt sarakstu ar Likes no Post
         public ICollection<Like> Likes { get; set; } = new List<Like>();
+
+        // lauks tiek aprēķināts automātiski, netiek glabāts datubāzē.
+        [NotMapped]
+        public int LikeCount => Likes?.Count ?? 0;
 
         public static Post From(PostRequest dto, int userId)
         {
