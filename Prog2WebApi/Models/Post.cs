@@ -10,14 +10,14 @@ namespace Prog2WebApi.Models
         public DateTime CreatedAt { get; set; }
         public int UserId { get; set; }
 
-        public static Post From(PostRequest dto)
+        public static Post From(PostRequest dto, int userId)
         {
             return new Post
             {
                 Title = dto.Title,
                 Content = dto.Content,
                 CreatedAt = DateTime.UtcNow,
-                UserId = dto.AuthorId
+                UserId = userId
             };
         }
     }

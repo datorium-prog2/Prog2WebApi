@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prog2WebApi.Data;
 using Prog2WebApi.Models;
 using Prog2WebApi.Models.Requests;
+using System.Security.Claims;
 
 namespace Prog2WebApi.Controllers
 {
@@ -37,11 +38,14 @@ namespace Prog2WebApi.Controllers
             return Ok(post);
         }
 
+        // atribūts authorize. lietotājam jābūt autorizētam
+        // ja ir šis atribūts - no tokena var izgūt info par lietotāju
         [Authorize]
         [HttpPost]
         public IActionResult CreatePost(PostRequest request)
         {
-            var post = Post.From(request);
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var post = Post.From(request, userId);
             _db.Posts.Add(post);
             _db.SaveChanges();
             return Ok(post);
