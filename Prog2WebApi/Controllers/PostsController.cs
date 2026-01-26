@@ -76,7 +76,7 @@ namespace Prog2WebApi.Controllers
             _db.Likes.Remove(existingLike);
             _db.SaveChanges();
 
-            return Ok(new { msg = "Like deleted." });
+            return Ok(new { msg = "Like removed." });
         }
     }
 }
