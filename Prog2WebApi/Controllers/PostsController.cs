@@ -44,26 +44,18 @@ namespace Prog2WebApi.Controllers
         [HttpPost]
         public IActionResult CreatePost(PostRequest request)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
             var post = Post.From(request, userId);
             _db.Posts.Add(post);
             _db.SaveChanges();
             return Ok(post);
         }
 
-        [HttpGet("user/{id:int}")]
-        public IActionResult GetPostsByUser(int id)
-        {
-            var userPosts = _db.Posts.Where(p => p.UserId == id).ToList();
-            return Ok(userPosts);
-        }
-
-
         [Authorize]
-        [HttpPost("like/{id:int}")]
+        [HttpPost("{id:int}/like")]
         public IActionResult Like(int id)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
             return Ok(new { userId, id });
         }
     }
