@@ -56,7 +56,15 @@ namespace Prog2WebApi.Controllers
         public IActionResult Like(int id)
         {
             var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-            return Ok(new { userId, id });
+            var like = new Like
+            {
+                PostId = id,
+                UserId = userId,
+            };
+            _db.Likes.Add(like);
+            _db.SaveChanges();
+
+            return Ok(new { msg = "Like added." });
         }
     }
 }
