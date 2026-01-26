@@ -14,5 +14,42 @@ namespace Prog2WebApi.Data
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Like> Likes => Set<Like>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // base = parent klase
+            base.OnModelCreating(modelBuilder);
+
+            // izveidot pareizu sasaisti starp Posts un Users tabulu
+            // izveidot FOREIGN KEY
+            // -1 ja izdzēsīs lietotāju, automātiski izdzēsīsies posti
+            // -2 PostId lauks var būt aizpildīts tikai ar eksistējoša User id
+            // Norādam User -> Post relāciju (One-To-Many)
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Norādam User -> Like relāciju (One-To-Many)
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.User)
+                .WithMany(u => u.Likes)
+                .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Norādam Post -> Like relāciju (One-To-Many)
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Post)
+                .WithMany(p => p.Likes)
+                .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Izdaram tā, lai likes neduplicētos
+            modelBuilder.Entity<Like>()
+                .HasIndex(l => new { l.UserId, l.PostId })
+                .IsUnique();
+        }
     }
+
 }
