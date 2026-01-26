@@ -1,8 +1,9 @@
 ﻿namespace Prog2WebApi.Models
 {
-    public class Like
+    public class Comment
     {
         public int Id { get; set; }
+        public string? Content { get; set; }
 
         // divas FOREIGN KEY
         public int UserId { get; set; }
@@ -12,5 +13,3 @@
         public Post Post { get; set; }
     }
 }
-
-// IZVEIDOT MODELI (klase) PRIEKŠ COMMENT.

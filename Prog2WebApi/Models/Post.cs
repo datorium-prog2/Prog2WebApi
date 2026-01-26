@@ -18,6 +18,7 @@ namespace Prog2WebApi.Models
         public User User { get; set; }
         // šis ļaus izgūt sarakstu ar Likes no Post
         public ICollection<Like> Likes { get; set; } = new List<Like>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         // lauks tiek aprēķināts automātiski, netiek glabāts datubāzē.
         [NotMapped]

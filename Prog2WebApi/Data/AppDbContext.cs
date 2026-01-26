@@ -14,6 +14,7 @@ namespace Prog2WebApi.Data
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Like> Likes => Set<Like>();
+        public DbSet<Comment> Comment => Set<Comment>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +50,20 @@ namespace Prog2WebApi.Data
             modelBuilder.Entity<Like>()
                 .HasIndex(l => new { l.UserId, l.PostId })
                 .IsUnique();
+
+            // Norādam User -> Comment relāciju (One-To-Many)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Norādam Post -> Comment relāciju (One-To-Many)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 
