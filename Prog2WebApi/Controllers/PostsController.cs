@@ -57,5 +57,14 @@ namespace Prog2WebApi.Controllers
             var userPosts = _db.Posts.Where(p => p.UserId == id).ToList();
             return Ok(userPosts);
         }
+
+
+        [Authorize]
+        [HttpPost("like/{id:int}")]
+        public IActionResult Like(int id)
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return Ok(new { userId, id });
+        }
     }
 }
