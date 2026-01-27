@@ -55,7 +55,11 @@ namespace Prog2WebApi.Controllers
         [HttpPost]
         public IActionResult CreatePost(PostRequest request)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
+            {
+                return Unauthorized();
+            }
+
             var post = Post.From(request, userId);
             _db.Posts.Add(post);
             _db.SaveChanges();
@@ -63,19 +67,22 @@ namespace Prog2WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("{id:int}/like")]
-        public IActionResult Like(int id)
+        [HttpPost("{postId:int}/like")]
+        public IActionResult Like(int postId)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
+            {
+                return Unauthorized();
+            }
 
             var existingLike = _db.Likes.FirstOrDefault(
-                l => l.UserId == userId && l.PostId == id);
+                l => l.UserId == userId && l.PostId == postId);
 
             if (existingLike == null)
             {
                 var like = new Like
                 {
-                    PostId = id,
+                    PostId = postId,
                     UserId = userId,
                 };
                 _db.Likes.Add(like);
@@ -88,6 +95,29 @@ namespace Prog2WebApi.Controllers
             _db.SaveChanges();
 
             return Ok(new { msg = "Like removed." });
+        }
+
+        [Authorize]
+        [HttpPost("{postId:int}/comment")]
+        public IActionResult AddComment(int postId, [FromBody] CommentRequest request)
+        {
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
+            {
+                return Unauthorized();
+            }
+
+            var comment = new Comment
+            {
+                UserId = userId,
+                PostId = postId,
+                Content = request.Content,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _db.Comment.Add(comment);
+            _db.SaveChanges();
+
+            return Ok(new { id = comment.Id });
         }
     }
 }
