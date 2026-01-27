@@ -63,7 +63,8 @@ namespace Prog2WebApi.Controllers
             var post = Post.From(request, userId);
             _db.Posts.Add(post);
             _db.SaveChanges();
-            return Ok(post);
+
+            return Ok(new { id = post.Id });
         }
 
         [Authorize]
