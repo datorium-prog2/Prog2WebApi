@@ -62,6 +62,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// atļat pieprasījums no localhost:3000
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowReactApp",
+        policy => { policy.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        }); 
+});
+
 
 var app = builder.Build();
 
@@ -75,6 +84,7 @@ using (var scope = app.Services.CreateScope())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 
